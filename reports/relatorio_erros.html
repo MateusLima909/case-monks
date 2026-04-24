@@ -33,15 +33,30 @@
         }
         .card { 
             background: #334155; 
-            padding: 24px; 
+            padding: 20px; 
             border-radius: 12px; 
             border-top: 4px solid #f97316; 
             flex: 1; 
             transition: transform 0.2s;
         }
         .card:hover { transform: translateY(-5px); }
-        .card h3 { margin: 0; color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        .card p { margin: 8px 0 0; font-size: 32px; font-weight: 800; color: #f8fafc; }
+        .card h2 { margin: 0; color: #94a3b8; font-size: 12px; letter-spacing: 1px; }
+        .card h3 { margin: 8px 0 0; font-weight: 800; color: #f8fafc; }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .section h2 {
+            color: #f97316;
+            margin-bottom: 10px;
+        }
+
+        .section p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
         
         table { 
             width: 100%; 
@@ -86,22 +101,37 @@
         
         <div class="summary">
             <div class="card">
-                <h3>Total Analisado</h3>
-                <p>413</p>
+                <h2>TOTAL ANALISADO</h2>
+                <h3>305</h3>
             </div>
             <div class="card">
-                <h3>Erros de Taxonomia</h3>
-                <p>34</p>
+                <h2>REGISTROS COM ERRO</h2>
+                <h3>27</h3>
             </div>
             <div class="card">
-                <h3>Score de Qualidade</h3>
-                <p>91.8%</p>
+                <h2>SCORE DE QUALIDADE</h2>
+                <h3>91.1%</h3>
             </div>
         </div>
 
-        <p style="color: #94a3b8; margin-bottom: 20px;">Detalhamento de registros com inconsistências em Lead_Source ou divergências de escopo.</p>
+        <div class="card">
+            <h2 style="color: #f97316; font-size: 20px;">Principais Problemas</h2>
+            <p><b>Taxonomia:</b> 4 registros (1.0%) fora do padrão → normalizados.</p>
+            <p><b>Financeiro:</b> divergência entre valores → corrigido via soma dos produtos.</p>
+            <p><b>Estrutura:</b> 23 registros inválidos → removidos.</p>
+
+            <p>
+                Foram identificadas inconsistências que impactavam diretamente a confiabilidade do pipeline comercial. 
+                Após o tratamento, a base foi padronizada, permitindo análises mais precisas de receita, canais de aquisição 
+                e performance operacional.
+            </p>
+        </div>
+
+        <p style="color: #94a3b8; margin-top: 30px;">
+            Exemplos reais de registros com inconsistências identificadas:
+        </p>
         
-        <table border="1" class="dataframe table">
+        <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th>Opportunity_ID</th>
@@ -122,14 +152,6 @@
       <td><span class="status-badge">Cidade Fora do Padrão</span></td>
     </tr>
     <tr>
-      <td>OPP-10008</td>
-      <td>Zinnia Apparel</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>Sao Carlos, BR</td>
-      <td>Closed Wonn</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
       <td>OPP-10031</td>
       <td>Quinoa Foods</td>
       <td>Prospecting - Personal (DEPRECATED)</td>
@@ -146,28 +168,12 @@
       <td><span class="status-badge">Cidade Fora do Padrão</span></td>
     </tr>
     <tr>
-      <td>OPP-10037</td>
-      <td>Dill Delivery</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>São Paulo</td>
-      <td>Closed Won</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
       <td>OPP-10039</td>
       <td>Raven Sports</td>
       <td>Don't Know-Other</td>
       <td>Votorantim, BR</td>
       <td>Closed Won</td>
       <td><span class="status-badge">Fonte de Lead Inválida</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10052</td>
-      <td>Elm Realty</td>
-      <td>MH Lead (DEPRECATED)</td>
-      <td>Votorantim, BR</td>
-      <td>Clossed Won</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
     </tr>
     <tr>
       <td>OPP-10054</td>
@@ -194,14 +200,6 @@
       <td><span class="status-badge">Cidade Fora do Padrão</span></td>
     </tr>
     <tr>
-      <td>OPP-10074</td>
-      <td>Basalt Mining</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>sp</td>
-      <td>Registration</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
       <td>OPP-10115</td>
       <td>Nova Studios</td>
       <td>Inbound - Current Client (DEPRECATED)</td>
@@ -225,168 +223,9 @@
       <td>Pitchinng</td>
       <td><span class="status-badge">Estágio Inválido</span></td>
     </tr>
-    <tr>
-      <td>OPP-10129</td>
-      <td>Company 112</td>
-      <td>Inbound - Website - Media.Monks (DEPRECATED)</td>
-      <td>sao paulo</td>
-      <td>Closed Won</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10130</td>
-      <td>Sage Streaming</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>São Paulo</td>
-      <td>Pitching</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10141</td>
-      <td>Company 113</td>
-      <td>Referral - S4 Company</td>
-      <td>São Paulo</td>
-      <td>Opportunity Identified</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10153</td>
-      <td>Company 117</td>
-      <td>Referral - Internal</td>
-      <td>SP</td>
-      <td>Closed Won</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10159</td>
-      <td>Walnut Manufacturing</td>
-      <td>Inbound - Website - Media.Monks (DEPRECATED)</td>
-      <td>Votorantim, BR</td>
-      <td>Pithced</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10162</td>
-      <td>Violet Agriculture</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>SAO PAULO</td>
-      <td>Closed Won</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10166</td>
-      <td>Magnolia Retail</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>sao paulo</td>
-      <td>Pitched</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10172</td>
-      <td>Yumberry Mobile</td>
-      <td>Refferal - Internal</td>
-      <td>Sao Carlos, BR</td>
-      <td>Negotiation</td>
-      <td><span class="status-badge">Fonte de Lead Inválida</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10173</td>
-      <td>Company 119</td>
-      <td>Inbound - Website - Media.Monks (DEPRECATED)</td>
-      <td>Sao Carlos, BR</td>
-      <td>Pithced</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10173</td>
-      <td>Company 119</td>
-      <td>Inbound - Website - Media.Monks (DEPRECATED)</td>
-      <td>Sao Carlos, BR</td>
-      <td>Pithced</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10175</td>
-      <td>Anise Beauty</td>
-      <td>Don't Know/Other (DEPRECATED)</td>
-      <td>Votorantim, BR</td>
-      <td>Negociation</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10184</td>
-      <td>Company 120</td>
-      <td>Referral - Internal</td>
-      <td>sao paulo</td>
-      <td>Qualified</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10204</td>
-      <td>Ibis Mobility</td>
-      <td>Inbound - Current Client (DEPRECATED)</td>
-      <td>SP</td>
-      <td>Pitched</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10211</td>
-      <td>Eucalyptus Fintech</td>
-      <td>Referral - Internal</td>
-      <td>sao paulo</td>
-      <td>Opportunity Identified</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10218</td>
-      <td>Juno Health</td>
-      <td>Referral - Internal</td>
-      <td>Sao Carlos, BR</td>
-      <td>Registrationn</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10229</td>
-      <td>Pyrite Fintech</td>
-      <td>MH Lead (DEPRECATED)</td>
-      <td>São Paulo</td>
-      <td>Registration</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10236</td>
-      <td>Tamarind Bank</td>
-      <td>Referral - Personal</td>
-      <td>Sao Carlos, BR</td>
-      <td>Pitchinng</td>
-      <td><span class="status-badge">Estágio Inválido</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10241</td>
-      <td>Yarrow Health</td>
-      <td>Existing Client-Account/Growth Activity</td>
-      <td>Sao Carlos, BR</td>
-      <td>Pitching</td>
-      <td><span class="status-badge">Fonte de Lead Inválida</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10253</td>
-      <td>Mulberry Electronics</td>
-      <td>Referral - Internal</td>
-      <td>sao paulo</td>
-      <td>Opportunity Identified</td>
-      <td><span class="status-badge">Cidade Fora do Padrão</span></td>
-    </tr>
-    <tr>
-      <td>OPP-10255</td>
-      <td>Company 127</td>
-      <td>Refferal - Internal</td>
-      <td>Sao Carlos, BR</td>
-      <td>Opportunity Identified</td>
-      <td><span class="status-badge">Fonte de Lead Inválida</span></td>
-    </tr>
   </tbody>
 </table>
+
     </div>
 </body>
 </html>
