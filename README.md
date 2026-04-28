@@ -7,6 +7,8 @@
 ![Pandas](https://img.shields.io/badge/Library-Pandas-orange)
 ![Plotly](https://img.shields.io/badge/Visualization-Plotly-yellow)
 
+### Link para o Dashboard e Relatório de Auditoria: https://mateuslima909.github.io/case-monks/
+
 ## 📖 Sobre o Projeto
 
 Este projeto foi desenvolvido como uma solução técnica completa para o gerenciamento e análise de dados de CRM. Ele ataca diretamente o problema de **"dados sujos"** que frequentemente distorcem as métricas de Sales Operations, impedindo uma tomada de decisão segura.
