@@ -126,7 +126,7 @@ qtd_cidade_estagio = ((df['Erro_Cidade']) | (df['Erro_Estagio'])).sum()
 pct_taxonomia = round((qtd_taxonomia / total_linhas) * 100, 1)
 
 # =========================
-# TABELA HTML
+# TABELA HTML E FORMATAÇÃO
 # =========================
 colunas_auditoria = [
     'Opportunity_ID',
@@ -137,146 +137,265 @@ colunas_auditoria = [
     'Motivo_do_Erro'
 ]
 
-tabela_html = erros[colunas_auditoria].head(10).to_html(index=False)
+erros_html = erros[colunas_auditoria].head(10).copy()
 
-for motivo in ["Fonte de Lead Inválida", "Cidade Fora do Padrão", "Estágio Inválido"]:
-    tabela_html = tabela_html.replace(
-        motivo,
-        f'<span class="status-badge">{motivo}</span>'
-    )
+# Transformar a string de erros em badges HTML independentes
+def formatar_badges(motivo_str):
+    if not motivo_str:
+        return ""
+    motivos = motivo_str.split(", ")
+    badges = [f'<span class="status-badge">{m}</span>' for m in motivos]
+    return " ".join(badges)
 
+erros_html['Motivo_do_Erro'] = erros_html['Motivo_do_Erro'].apply(formatar_badges)
+
+# Convertendo para HTML com escape=False para permitir a renderização das tags <span>
+tabela_html = erros_html.to_html(index=False, escape=False, border=0, classes="data-table")
+
+# =========================
+# TEMPLATE HTML
+# =========================
 html_template = f"""
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <style>
-        body {{ 
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; 
-            margin: 40px; 
-            background-color: #0f172a; 
-            color: #f8fafc; 
+        :root {{
+            --bg-color: #C9C6C1; 
+            --text-main: #1A1A1A; 
+            --text-secondary: #222222; 
+            --text-muted: #888888; 
+            --white: #FFFFFF; 
+            --border-light: #E5E5E0;
+            --hover-bg: #F5F5F0;
         }}
-        .container {{ 
-            max-width: 1200px; 
+
+        body {{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0; 
+            padding: 60px 40px; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            line-height: 1.6;
+        }}
+
+        .container {{
+            max-width: 1100px; 
             margin: auto; 
-            background: #1e293b; 
-            padding: 40px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); 
         }}
-        h1 {{ 
-            color: #f97316; 
-            font-size: 28px; 
-            margin-bottom: 30px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
+
+        .header-title {{
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px; 
+            margin-bottom: 40px; 
+            border-bottom: 3px solid var(--text-main);
+            padding-bottom: 15px;
         }}
-        .summary {{ 
-            display: flex; 
+
+        .summary {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px; 
             margin-bottom: 40px; 
         }}
-        .card {{ 
-            background: #334155; 
-            padding: 20px; 
-            border-radius: 12px; 
-            border-top: 4px solid #f97316; 
-            flex: 1; 
-            transition: transform 0.2s;
+
+        .card {{
+            background: var(--text-main); 
+            padding: 24px; 
+            border-radius: 12px;
+            text-align: left;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }}
-        .card:hover {{ transform: translateY(-5px); }}
-        .card h2 {{ margin: 0; color: #94a3b8; font-size: 12px; letter-spacing: 1px; }}
-        .card h3 {{ margin: 8px 0 0; font-weight: 800; color: #f8fafc; }}
+
+        .card h2 {{
+            color: var(--text-muted); 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 1.5px; 
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+        }}
+
+        .card h3 {{
+            color: var(--white); 
+            font-size: 36px; 
+            font-weight: 800;
+            margin: 0; 
+        }}
 
         .section {{
-            margin-top: 30px;
+            background: var(--white);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            margin-bottom: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }}
 
         .section h2 {{
-            color: #f97316;
-            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text-main);
         }}
 
-        .section p {{
-            color: #cbd5e1;
-            line-height: 1.6;
-            margin-bottom: 10px;
+        .problem-list {{
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }}
+
+        .problem-list li {{
+            font-size: 15px; 
+            color: var(--text-secondary);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }}
+
+        .problem-list li:last-child {{
+            border-bottom: none;
+        }}
+
+        .problem-list strong {{
+            color: var(--text-main);
+            display: inline-block;
+            width: 100px;
+        }}
+
+        .impact-box {{
+            background-color: #F3F3F1;
+            padding: 16px 20px;
+            border-left: 4px solid var(--text-main);
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }}
+
+        .table-section-title {{
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
         }}
         
-        table {{ 
+        .data-table {{
             width: 100%; 
             border-collapse: separate; 
-            border-spacing: 0; 
-            margin-top: 20px; 
-            border-radius: 8px; 
-            overflow: hidden; 
+            border-spacing: 0;
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }}
-        th {{ 
-            background-color: #f97316; 
-            color: #ffffff; 
-            text-align: left; 
-            padding: 16px; 
-            font-weight: 600; 
+
+        .data-table thead th {{
+            background-color: var(--text-main); 
+            color: var(--white); 
+            padding: 16px 20px; 
+            font-weight: 700; 
             text-transform: uppercase; 
-            font-size: 12px; 
+            font-size: 11px; 
+            letter-spacing: 1px;
+            text-align: left;
         }}
-        td {{ 
-            padding: 14px 16px; 
-            border-bottom: 1px solid #334155; 
-            background-color: #1e293b; 
-            color: #cbd5e1; 
+
+        .data-table tbody td {{
+            padding: 16px 20px; 
+            border-bottom: 1px solid var(--border-light); 
+            color: var(--text-secondary); 
             font-size: 14px; 
+            vertical-align: middle;
         }}
-        tr:hover td {{ background-color: #334155; color: #f8fafc; }}
+
+        .data-table tbody tr:last-child td {{
+            border-bottom: none;
+        }}
+
+        .data-table tbody tr:hover td {{
+            background-color: var(--hover-bg); 
+        }}
         
         .status-badge {{
-            background: rgba(249, 115, 22, 0.1);
-            color: #f97316;
-            padding: 4px 12px;
-            border-radius: 9999px;
+            display: inline-block;
+            background: var(--white);
+            color: var(--text-main);
+            padding: 4px 10px;
+            border: 1px solid var(--text-main); 
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin: 2px 4px 2px 0;
+        }}
+
+        .btn-back {{
+            position: relative;
+            top: -30px;
+            left: 90%;
+            background: #1A1A1A;
+            color: #F3F3F1;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 30px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid #F3F3F1;
+            z-index: 1000;
+            transition: 0.3s;
+        }}
+
+        .btn-back:hover {{
+            background: #F3F3F1;
+            color: #1A1A1A;
         }}
     </style>
     <title>Auditoria de Dados | Operations</title>
 </head>
 <body>
+    <a href="../index.html" class="btn-back">Voltar para o Início</a>
     <div class="container">
-        <h1><span>📊</span> Relatório de Auditoria de Dados</h1>
+        <div class="header-title">Relatório de Auditoria de Dados</div>
         
         <div class="summary">
             <div class="card">
-                <h2>TOTAL ANALISADO</h2>
+                <h2>Total Analisado</h2>
                 <h3>{len(df)}</h3>
             </div>
             <div class="card">
-                <h2>REGISTROS COM ERRO</h2>
+                <h2>Registros com Erro</h2>
                 <h3>{len(erros)}</h3>
             </div>
             <div class="card">
-                <h2>SCORE DE QUALIDADE</h2>
-                <h3>{round((1 - (len(erros)/len(df)))*100, 1)}%</h3>
+                <h2>Score de Qualidade</h2>
+                <h3>{score_qualidade}%</h3>
             </div>
         </div>
 
-        <div class="card">
-            <h2 style="color: #f97316; font-size: 20px;">Principais Problemas</h2>
-            <p><b>Taxonomia:</b> {qtd_taxonomia} registros ({pct_taxonomia}%) fora do padrão → normalizados.</p>
-            <p><b>Financeiro:</b> divergência entre valores → corrigido via soma dos produtos.</p>
-            <p><b>Estrutura:</b> {qtd_cidade_estagio} registros inválidos → removidos.</p>
-
-            <p>
-                Foram identificadas inconsistências que impactavam diretamente a confiabilidade do pipeline comercial. 
-                Após o tratamento, a base foi padronizada, permitindo análises mais precisas de receita, canais de aquisição 
-                e performance operacional.
-            </p>
+        <div class="section">
+            <h2>Principais Problemas</h2>
+            <ul class="problem-list">
+                <li><strong>Taxonomia:</strong> {qtd_taxonomia} registros ({pct_taxonomia}%) fora do padrão &rarr; normalizados.</li>
+                <li><strong>Financeiro:</strong> divergência entre valores &rarr; corrigido via soma dos produtos.</li>
+                <li><strong>Estrutura:</strong> {qtd_cidade_estagio} registros inválidos &rarr; removidos.</li>
+            </ul>
+            <div class="impact-box">
+                Foram identificadas inconsistências que impactavam diretamente a confiabilidade do pipeline comercial. Após o tratamento, a base foi padronizada, permitindo análises mais precisas de receita, canais de aquisição e performance operacional.
+            </div>
         </div>
 
-        <p style="color: #94a3b8; margin-top: 30px;">
-            Exemplos reais de registros com inconsistências identificadas:
-        </p>
+        <div class="table-section-title">
+            Exemplos reais de registros com inconsistências:
+        </div>
         
         {tabela_html}
 
