@@ -51,6 +51,24 @@ O projeto vai além do código, entregando inteligência para a liderança:
 
 ---
 
+### 🤖 Uso de Inteligência Artificial
+
+Este projeto utilizou IA generativa (Gemini) como copiloto técnico e analítico ao longo de todo o desenvolvimento, com foco em acelerar a análise, garantir consistência e apoiar decisões.
+
+* **Auditoria de Dados:** A IA foi utilizada para identificar padrões de inconsistência na base `opps_corrupted.xlsx`, sugerindo regras de normalização para campos categóricos (ex: taxonomia de lead source) e possíveis validações estruturais.
+
+* **Desenvolvimento e Debugging:** Apoio na escrita e refatoração de código Python, incluindo tratamento de dados, validações e geração de relatórios. As sugestões foram sempre revisadas e adaptadas conforme o contexto do problema.
+
+* **Validação de Lógica e Regras:** Utilizada para revisar regras de negócio (ex: cálculo de receita, deduplicação por oportunidade) e identificar possíveis edge cases.
+
+* **Geração de Insights:** Apoio na interpretação dos dados tratados, auxiliando na formulação de hipóteses e recomendações para melhoria do pipeline comercial.
+
+* **Produtividade:** A utilização da IA reduziu o tempo de desenvolvimento e permitiu maior foco na análise crítica dos dados e na qualidade das entregas.
+
+   > Todas as decisões finais, validações e definições de regra foram realizadas manualmente, utilizando a IA como ferramenta de apoio.
+
+---
+
 ## 🚀 Como Executar o Projeto
 
 ### Estrutura de Pastas
@@ -82,21 +100,7 @@ Para o funcionamento correto, mantenha a estrutura:
    ```
    * Visualize o resultado final abrindo o arquivo `reports/analise.html` no seu navegador.
 
-### 🤖 Uso de Inteligência Artificial
-
-Este projeto utilizou IA generativa (Gemini) como copiloto técnico e analítico ao longo de todo o desenvolvimento, com foco em acelerar a análise, garantir consistência e apoiar decisões.
-
-* **Auditoria de Dados:** A IA foi utilizada para identificar padrões de inconsistência na base `opps_corrupted.xlsx`, sugerindo regras de normalização para campos categóricos (ex: taxonomia de lead source) e possíveis validações estruturais.
-
-* **Desenvolvimento e Debugging:** Apoio na escrita e refatoração de código Python, incluindo tratamento de dados, validações e geração de relatórios. As sugestões foram sempre revisadas e adaptadas conforme o contexto do problema.
-
-* **Validação de Lógica e Regras:** Utilizada para revisar regras de negócio (ex: cálculo de receita, deduplicação por oportunidade) e identificar possíveis edge cases.
-
-* **Geração de Insights:** Apoio na interpretação dos dados tratados, auxiliando na formulação de hipóteses e recomendações para melhoria do pipeline comercial.
-
-* **Produtividade:** A utilização da IA reduziu o tempo de desenvolvimento e permitiu maior foco na análise crítica dos dados e na qualidade das entregas.
-
-   > Todas as decisões finais, validações e definições de regra foram realizadas manualmente, utilizando a IA como ferramenta de apoio.
+---
 
 ## 🤝 Contribuição
 
