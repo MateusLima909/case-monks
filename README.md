@@ -62,7 +62,7 @@ Para o funcionamento correto, mantenha a estrutura:
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/MateusLima909/case-monks.git](https://github.com/MateusLima909/case-monks.git)
+   git clone https://github.com/MateusLima909/case-monks.git
    cd case-monks
    ```
 
