@@ -14,13 +14,15 @@ Este projeto foi desenvolvido como uma solução técnica completa para o gerenc
 
 O ecossistema consiste em um pipeline de **Data Quality** que audita bases corrompidas, corrige divergências financeiras e gera automaticamente um dashboard executivo interativo com os principais KPIs de venda.
 
+> ⚠️ **Nota sobre os Dados:** Todos os dados, valores financeiros e nomes de clientes utilizados neste repositório são **100% fictícios**. Este projeto foi originalmente desenvolvido como um case prático para um processo seletivo, mas como gostei muito do resultado técnico e visual alcançado, decidi aprimorá-lo e mantê-lo público no meu GitHub como portfólio.
+
 ### ✨ Funcionalidades Principais
 
-* **Auditoria Automatizada:** Identifica inconsistências em cidades, estágios de venda e taxonomia de fontes de lead.
-* **Recálculo Financeiro:** Corrige o valor total das oportunidades (`Amount`) com base na soma real dos produtos, eliminando erros de input manual.
-* **Dashboard Executivo:** Visualização de 10 métricas críticas, incluindo Win Rate, Receita MoM, Ciclo de Venda e Mix de Negócios (New Business vs Upsell).
-* **Relatórios de Erros:** Geração de um arquivo HTML (`relatorio_erros.html`) com badges de status para facilitar a identificação de registros que precisam de correção no CRM.
-* **Layout Híbrido:** Design responsivo com destaques para métricas de receita e grade de detalhes para métricas operacionais.
+- **Auditoria Automatizada:** Identifica inconsistências em cidades, estágios de venda e taxonomia de fontes de lead.
+- **Recálculo Financeiro:** Corrige o valor total das oportunidades (`Amount`) com base na soma real dos produtos, eliminando erros de input manual.
+- **Dashboard Executivo:** Visualização de 10 métricas críticas, incluindo Win Rate, Receita MoM, Ciclo de Venda e Mix de Negócios (New Business vs Upsell), com filtros dinâmicos por categoria (*Receita & Clientes*, *Pipeline & Risco* e *Eficiência & Conversão*).
+- **Relatórios de Erros Interativos:** Geração de um arquivo HTML (`relatorio_erros.html`) com badges de status e barra de busca em tempo real para filtrar registros que precisam de correção no CRM.
+- **Design System & Modo Claro/Escuro:** Interface estruturada em **Bento Grid** responsivo com tokens CSS, tipografia executiva (`Inter` + `JetBrains Mono`) e alternância de tema Claro/Escuro sincronizada entre todas as páginas e gráficos do Plotly.
 
 ---
 
@@ -34,20 +36,20 @@ O ecossistema consiste em um pipeline de **Data Quality** que audita bases corro
 
 ## 🛠️ Tecnologias Utilizadas
 
-* **Linguagem:** Python
-* **Processamento de Dados:** Pandas (Deduplicação, Normalização e lógica de ETL)
-* **Visualização Interativa:** Plotly Express (Gráficos dinâmicos e responsivos)
-* **Relatórios:** HTML5 & CSS3 (Layout de Grid customizado)
-* **Manipulação de Arquivos:** OpenPyXL (Leitura e escrita de Excel)
+- **Linguagem:** Python
+- **Processamento de Dados:** Pandas (Deduplicação, Normalização e lógica de ETL)
+- **Visualização Interativa:** Plotly Express & Plotly.js (Gráficos dinâmicos responsivos com adaptação de tema via `relayout` e `restyle`)
+- **Front-end & Design System:** HTML5, CSS3 (CSS Variables, Bento Grid Layout) e JavaScript ES6+ (Persistência de tema via `localStorage`, filtros de visualização e busca em tabelas)
+- **Manipulação de Arquivos:** OpenPyXL (Leitura e escrita de Excel)
 
 ---
 
 ## 🗺️ Contexto de Negócio (Insights)
 
 O projeto vai além do código, entregando inteligência para a liderança:
-* **Eficiência de Canais:** Identificamos que a fonte *Referral* possui o maior Win Rate, sugerindo uma estratégia focada em parcerias.
-* **Saúde do Pipeline:** O dashboard revela \$75M em volume total, mas com concentração em estágios iniciais, alertando para a necessidade de aceleração de deals.
-* **Data Quality:** A automação identificou e filtrou registros com cidades fora do padrão e estágios inválidos, elevando a confiabilidade da base para 100%.
+- **Eficiência de Canais:** Identificamos que a fonte *Referral* possui o maior Win Rate, sugerindo uma estratégia focada em parcerias.
+- **Saúde do Pipeline:** O dashboard revela $75M em volume total, mas com concentração em estágios iniciais, alertando para a necessidade de aceleração de deals.
+- **Data Quality:** A automação identificou e filtrou registros com cidades fora do padrão e estágios inválidos, elevando a confiabilidade da base para 100%.
 
 ---
 
@@ -55,15 +57,15 @@ O projeto vai além do código, entregando inteligência para a liderança:
 
 Este projeto utilizou IA generativa (Gemini) como copiloto técnico e analítico ao longo de todo o desenvolvimento, com foco em acelerar a análise, garantir consistência e apoiar decisões.
 
-* **Auditoria de Dados:** A IA foi utilizada para identificar padrões de inconsistência na base `opps_corrupted.xlsx`, sugerindo regras de normalização para campos categóricos (ex: taxonomia de lead source) e possíveis validações estruturais.
+- **Auditoria de Dados:** A IA foi utilizada para identificar padrões de inconsistência na base `opps_corrupted.xlsx`, sugerindo regras de normalização para campos categóricos (ex: taxonomia de lead source) e possíveis validações estruturais.
 
-* **Desenvolvimento e Debugging:** Apoio na escrita e refatoração de código Python, incluindo tratamento de dados, validações e geração de relatórios. As sugestões foram sempre revisadas e adaptadas conforme o contexto do problema.
+- **Desenvolvimento, UI/UX e Debugging:** Apoio na escrita e refatoração do código Python e na construção de um Design System padronizado para os relatórios HTML (incluindo responsividade dos gráficos e suporte a Modo Escuro). As sugestões foram sempre revisadas e adaptadas conforme o contexto do problema.
 
-* **Validação de Lógica e Regras:** Utilizada para revisar regras de negócio (ex: cálculo de receita, deduplicação por oportunidade) e identificar possíveis edge cases.
+- **Validação de Lógica e Regras:** Utilizada para revisar regras de negócio (ex: cálculo de receita, deduplicação por oportunidade) e identificar possíveis edge cases.
 
-* **Geração de Insights:** Apoio na interpretação dos dados tratados, auxiliando na formulação de hipóteses e recomendações para melhoria do pipeline comercial.
+- **Geração de Insights:** Apoio na interpretação dos dados tratados, auxiliando na formulação de hipóteses e recomendações para melhoria do pipeline comercial.
 
-* **Produtividade:** A utilização da IA reduziu o tempo de desenvolvimento e permitiu maior foco na análise crítica dos dados e na qualidade das entregas.
+- **Produtividade:** A utilização da IA reduziu o tempo de desenvolvimento e permitiu maior foco na análise crítica dos dados e na qualidade das entregas.
 
    > Todas as decisões finais, validações e definições de regra foram realizadas manualmente, utilizando a IA como ferramenta de apoio.
 
@@ -79,7 +81,7 @@ Para o funcionamento correto, mantenha a estrutura:
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/MateusLima909/case-monks.git
+   git clone [https://github.com/MateusLima909/case-monks.git](https://github.com/MateusLima909/case-monks.git)
    cd case-monks
    ```
 
@@ -101,10 +103,6 @@ Para o funcionamento correto, mantenha a estrutura:
    * Visualize o resultado final abrindo o arquivo `reports/analise.html` no seu navegador.
 
 ---
-
-## 🤝 Contribuição
-
-Este projeto foi desenvolvido como um estudo de caso técnico. Feedbacks e sugestões de novas métricas são sempre bem-vindos! Sinta-se à vontade para abrir uma issue.
 
 ## 📝 Licença
 

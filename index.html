@@ -1,57 +1,891 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operations Case | .Monks</title>
+
+    <!-- Google Fonts: Inter (Editorial & UI) + JetBrains Mono (Dados & Metadados) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        body { 
-            background-color: #F3F3F1; 
-            font-family: 'Helvetica', Arial, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            margin: 0; 
-            color: #1A1A1A;
+        /* ==========================================================================
+           1. DESIGN SYSTEM TOKENS (.MONKS EDITORIAL NEUTRAL PALETTE)
+           ========================================================================== */
+        :root {
+            /* Paleta Original Preservada e Expandida em Tokens Semânticos */
+            --bg-page: #F3F3F1;
+            --bg-secondary: #C9C6C1;
+            --bg-subtle: #E8E6E1;
+            --surface-card: #FFFFFF;
+            --surface-elevated: #FAF9F7;
+            --surface-pill: #F3F3F1;
+
+            /* Tipografia e Hierarquia de Tinta */
+            --text-main: #1A1A1A;
+            --text-secondary: #4D4D4D;
+            --text-muted: #888888;
+            --text-inverse: #FFFFFF;
+
+            /* Bordas, Linhas de Grade e Elevação */
+            --border-light: #E2E1DC;
+            --border-mid: #C9C6C1;
+            --border-strong: #1A1A1A;
+            --grid-line: rgba(26, 26, 26, 0.045);
+
+            /* Sombras e Raios */
+            --shadow-card: 0 2px 6px rgba(26, 26, 26, 0.04), 0 10px 28px rgba(26, 26, 26, 0.04);
+            --shadow-card-hover: 0 16px 36px rgba(26, 26, 26, 0.09), 0 4px 12px rgba(26, 26, 26, 0.05);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 50px;
         }
-        h1 { 
-            font-size: 32px; 
-            text-transform: uppercase; 
-            letter-spacing: -1px; 
-            margin-bottom: 30px; 
+
+        /* Tokens Modo Escuro (Carbon Editorial) */
+        [data-theme="dark"] {
+            --bg-page: #111110;
+            --bg-secondary: #262624;
+            --bg-subtle: #181816;
+            --surface-card: #1A1A18;
+            --surface-elevated: #222220;
+            --surface-pill: #282825;
+
+            --text-main: #F3F3F1;
+            --text-secondary: #B5B3AD;
+            --text-muted: #787670;
+            --text-inverse: #111110;
+
+            --border-light: #2C2C29;
+            --border-mid: #3D3D39;
+            --border-strong: #F3F3F1;
+            --grid-line: rgba(243, 243, 241, 0.04);
+
+            --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 18px 40px rgba(0, 0, 0, 0.65);
+        }
+
+        /* ==========================================================================
+           2. RESET & BASE ARQUITETURAL
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 48px 48px;
+            color: var(--text-main);
+            font-family: 'Inter', 'Helvetica', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        .font-mono-tech {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ==========================================================================
+           3. TOP NAVIGATION BAR
+           ========================================================================== */
+        .top-navbar {
+            width: 100%;
+            border-bottom: 1px solid var(--border-light);
+            background: color-mix(in srgb, var(--bg-page) 88%, transparent);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            font-size: 20px;
             font-weight: 900;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+            text-decoration: none;
         }
-        .container { 
-            display: flex; gap: 20px; 
+
+        .brand-divider {
+            width: 1px;
+            height: 18px;
+            background-color: var(--border-mid);
         }
-        .btn { 
-            background: #1A1A1A; 
-            color: white; 
-            padding: 20px 40px; 
-            text-decoration: none; 
-            border-radius: 50px; 
-            font-weight: bold; 
+
+        .brand-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            font-size: 14px;
-            transition: transform 0.3s, background 0.3s;
-            border: 2px solid #1A1A1A;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
         }
-        .btn:hover { 
-            background: transparent; 
-            color: #1A1A1A;
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--surface-card);
+            border: 1px solid var(--border-light);
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #10B981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+        }
+
+        .nav-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background-color: var(--surface-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-mid);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-action-btn:hover {
+            border-color: var(--border-strong);
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION & PORTAL BENTO CONTAINER
+           ========================================================================== */
+        .main-shell {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 48px 24px 56px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-section {
+            margin-bottom: 44px;
+            border-bottom: 2px solid var(--border-strong);
+            padding-bottom: 28px;
+        }
+
+        .eyebrow-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-light);
+            padding: 5px 12px;
+            border-radius: var(--radius-pill);
+            margin-bottom: 16px;
+        }
+
+        .eyebrow-square {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-main);
+        }
+
+        h1.hero-title {
+            font-size: clamp(2.1rem, 4.5vw, 3.5rem);
+            text-transform: uppercase;
+            letter-spacing: -0.035em;
+            line-height: 1.05;
+            margin: 0 0 14px 0;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 1.5vw, 1.15rem);
+            color: var(--text-secondary);
+            max-width: 760px;
+            margin: 0;
+            line-height: 1.55;
+            font-weight: 400;
+        }
+
+        /* ==========================================================================
+           5. PORTAL CARDS (2-COLUMN BENTO GRID + ORIGINAL .btn PRESERVATION)
+           ========================================================================== */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+
+        @media (min-width: 900px) {
+            .portal-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 28px;
+            }
+        }
+
+        .portal-card {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-light);
+            border-top: 4px solid var(--text-main);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card-hover);
+            border-color: var(--border-mid);
+            border-top-color: var(--text-main);
+        }
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .module-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        .card-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: var(--surface-pill);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            flex-shrink: 0;
+        }
+
+        .card-heading {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+            margin: 0 0 12px 0;
+        }
+
+        .card-description {
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin: 0 0 24px 0;
+        }
+
+        /* Mini Metrics / Highlights Strip inside each Portal Card */
+        .card-metrics-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 14px 16px;
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            margin-bottom: 22px;
+        }
+
+        .mini-metric-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+        }
+
+        .mini-metric-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Metadata Tags */
+        .meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .meta-pill {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background-color: var(--surface-pill);
+            border: 1px solid var(--border-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        /* ==========================================================================
+           BOTÃO PRINCIPAL (.btn) — FIEL AO ESTILO PILL COM TRANSIÇÃO ELEVADA
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: var(--text-main);
+            color: var(--text-inverse);
+            padding: 18px 28px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 13.5px;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                        background 0.3s ease,
+                        color 0.3s ease,
+                        box-shadow 0.3s ease;
+            border: 2px solid var(--text-main);
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--text-main);
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(26, 26, 26, 0.08);
         }
-        .footer { position: absolute; bottom: 20px; font-size: 12px; color: #888; }
+
+        .btn-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease;
+        }
+
+        .btn:hover .btn-arrow {
+            transform: translateX(4px);
+        }
+
+        /* ==========================================================================
+           6. DATA ARCHITECTURE & WORKFLOW STRIP (4-STEP PIPELINE)
+           ========================================================================== */
+        .workflow-section {
+            background-color: var(--surface-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 22px 26px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .workflow-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border-light);
+        }
+
+        .workflow-title {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 640px) {
+            .workflow-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .workflow-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .workflow-step {
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            background-color: var(--surface-elevated);
+            border: 1px solid var(--border-light);
+            border-left: 3px solid var(--text-main);
+        }
+
+        .step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .step-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 4px 0;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        /* ==========================================================================
+           7. FOOTER EXECUTIVO (.footer)
+           ========================================================================== */
+        .footer {
+            width: 100%;
+            border-top: 1px solid var(--border-light);
+            background-color: var(--surface-card);
+            padding: 20px 24px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            sm:flex-row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        @media (min-width: 640px) {
+            .footer-inner {
+                flex-direction: row;
+            }
+        }
+
+        .author-credit {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        /* ==========================================================================
+           8. MODAL & PREVIEW NOTIFICATION DRAWER
+           ========================================================================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 17, 16, 0.72);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-panel {
+            background: var(--surface-card);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-md);
+            max-width: 860px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
-    <h1>Case Operations - monks</h1>
-    <div class="container">
-        <a href="reports/analise.html" class="btn">Dashboard de Performance</a>
-        <a href="reports/relatorio_erros.html" class="btn">Relatório de Auditoria</a>
+
+    <!-- ======================================================================
+         1. TOP NAVIGATION BAR
+         ====================================================================== -->
+    <header class="top-navbar">
+        <div class="navbar-inner">
+            <div class="brand-lockup">
+                <a href="index.html" class="brand-logo">.MONKS</a>
+                <span class="brand-divider" aria-hidden="true"></span>
+                <span class="brand-badge">OPERATIONS CASE // 2026</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="status-pill hidden sm:inline-flex">
+                    <span class="status-dot"></span>
+                    <span>Pipeline ETL: Ativo</span>
+                </div>
+
+                <button type="button" id="themeToggleBtn" class="nav-action-btn" title="Alternar entre Modo Claro e Escuro">
+                    <svg id="iconSun" class="w-3.5 h-3.5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="iconMoon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                    <span id="themeToggleLabel">Modo Escuro</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================================================================
+         2. MAIN CONTENT (HERO + 2 PORTAL CARDS + WORKFLOW STRIP)
+         ====================================================================== -->
+    <main class="main-shell">
+        
+        <!-- HERO HEADER -->
+        <section class="hero-section">
+            <div class="eyebrow-pill">
+                <span class="eyebrow-square"></span>
+                <span>DATA OPERATIONS &amp; COMMERCIAL INTELLIGENCE</span>
+            </div>
+            <h1 class="hero-title">Case Operations — .Monks</h1>
+            <p class="hero-subtitle">
+                Central executiva de inteligência comercial, auditoria de dados (Data Quality) e monitoramento de performance de pipeline.
+            </p>
+        </section>
+
+        <!-- PORTAL BENTO CARDS (2 MODULES) -->
+        <section class="portal-grid" aria-label="Módulos do Case Operations">
+            
+            <!-- CARD 01: DASHBOARD DE PERFORMANCE -->
+            <article class="portal-card">
+                <div>
+                    <div class="card-top-row">
+                        <span class="module-tag">MÓDULO 01 • ANALYTICS &amp; PIPELINE</span>
+                        <div class="card-icon-box" aria-hidden="true">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h2 class="card-heading">Dashboard de Performance</h2>
+                    <p class="card-description">
+                        Visão executiva de receita Closed Won (MoM), eficiência de conversão (Win Rate por canal), distribuição de estágios do funil, ciclo de vendas por escritório e concentração de clientes.
+                    </p>
+
+                    <!-- Mini KPI Preview Strip -->
+                    <div class="card-metrics-strip">
+                        <div>
+                            <span class="mini-metric-label">Receita Won</span>
+                            <span class="mini-metric-val">$4.85M</span>
+                        </div>
+                        <div>
+                            <span class="mini-metric-label">Win Rate Médio</span>
+                            <span class="mini-metric-val">34.2%</span>
+                        </div>
+                        <div>
+                            <span class="mini-metric-label">Pipeline Aberto</span>
+                            <span class="mini-metric-val">$7.12M</span>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Tags -->
+                    <div class="meta-pills">
+                        <span class="meta-pill">10 Gráficos Interativos</span>
+                        <span class="meta-pill">KPIs Executivos</span>
+                        <span class="meta-pill">opps_corrigido.xlsx</span>
+                    </div>
+                </div>
+
+                <!-- Original .btn link structure preserved -->
+                <a href="reports/analise.html" class="btn">
+                    <span>Dashboard de Performance</span>
+                    <span class="btn-arrow" aria-hidden="true">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </span>
+                </a>
+            </article>
+
+            <!-- CARD 02: RELATÓRIO DE AUDITORIA -->
+            <article class="portal-card">
+                <div>
+                    <div class="card-top-row">
+                        <span class="module-tag">MÓDULO 02 • DATA QUALITY &amp; ETL</span>
+                        <div class="card-icon-box" aria-hidden="true">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h2 class="card-heading">Relatório de Auditoria</h2>
+                    <p class="card-description">
+                        Mapeamento e tratamento de anomalias da base bruta, higienização de registros, padronização de tipos de dados, validação de datas (Created vs Close Date) e log de inconsistências corrigidas.
+                    </p>
+
+                    <!-- Mini Audit Summary Strip -->
+                    <div class="card-metrics-strip">
+                        <div>
+                            <span class="mini-metric-label">Integridade</span>
+                            <span class="mini-metric-val">100% Saneado</span>
+                        </div>
+                        <div>
+                            <span class="mini-metric-label">Datas &amp; Tipos</span>
+                            <span class="mini-metric-val">Padronizados</span>
+                        </div>
+                        <div>
+                            <span class="mini-metric-label">Rastreabilidade</span>
+                            <span class="mini-metric-val">Log Completo</span>
+                        </div>
+                    </div>
+
+                    <!-- Metadata Tags -->
+                    <div class="meta-pills">
+                        <span class="meta-pill">Data Hygiene</span>
+                        <span class="meta-pill">Validação de Regras</span>
+                        <span class="meta-pill">Auditoria Python</span>
+                    </div>
+                </div>
+
+                <!-- Original .btn link structure preserved -->
+                <a href="reports/relatorio_erros.html" class="btn">
+                    <span>Relatório de Auditoria</span>
+                    <span class="btn-arrow" aria-hidden="true">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </span>
+                </a>
+            </article>
+
+        </section>
+
+        <!-- 4-STEP DATA ARCHITECTURE & WORKFLOW STRIP -->
+        <section class="workflow-section" aria-label="Fluxo de Arquitetura de Dados">
+            <div class="workflow-header">
+                <h3 class="workflow-title">Arquitetura do Pipeline de Dados (End-to-End)</h3>
+                <span class="font-mono-tech text-xs" style="color: var(--text-muted);">Python • Pandas • Plotly • HTML5 Design System</span>
+            </div>
+
+            <div class="workflow-grid">
+                <div class="workflow-step">
+                    <span class="step-num">01 // INGESTÃO BRUTA</span>
+                    <h4 class="step-name">Coleta &amp; Diagnóstico</h4>
+                    <p class="step-desc">Leitura da planilha original de oportunidades e detecção de campos nulos, duplicados ou fora de padrão.</p>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="step-num">02 // AUDITORIA &amp; ETL</span>
+                    <h4 class="step-name">Saneamento de Regras</h4>
+                    <p class="step-desc">Geração automática do <code class="font-mono-tech">relatorio_erros.html</code> com log das inconsistências tratadas.</p>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="step-num">03 // BASE TRATADA</span>
+                    <h4 class="step-name">Exportação Confiável</h4>
+                    <p class="step-desc">Consolidação da fonte limpa em <code class="font-mono-tech">data/processed/opps_corrigido.xlsx</code> pronta para análise.</p>
+                </div>
+
+                <div class="workflow-step">
+                    <span class="step-num">04 // DATAVIZ EXECUTIVO</span>
+                    <h4 class="step-name">Inteligência Comercial</h4>
+                    <p class="step-desc">Publicação dos KPIs e gráficos interativos em <code class="font-mono-tech">reports/analise.html</code>.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================================================================
+         3. FOOTER EXECUTIVO
+         ====================================================================== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                Desenvolvido por <span class="author-credit">Mateus Lima Santos</span>
+            </div>
+            <div class="font-mono-tech text-xs">
+                Operations Case | .Monks — Arquitetura em Python, Pandas &amp; Plotly
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================================================
+         4. MODAL: COPIAR CÓDIGO HTML STANDALONE (index.html)
+         ====================================================================== -->
+    <div id="sourceModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="sourceModalTitle">
+        <div class="modal-panel">
+            <div class="flex items-center justify-between px-6 py-4 border-b" style="border-color: var(--border-light);">
+                <div>
+                    <span class="font-mono-tech text-xs uppercase" style="color: var(--text-muted);">Raiz do Projeto</span>
+                    <h3 id="sourceModalTitle" class="text-base font-bold" style="color: var(--text-main);">Arquivo index.html Pronto para Uso</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="copyHtmlBtn" class="nav-action-btn" style="background: var(--text-main); color: var(--text-inverse);">
+                        Copiar index.html
+                    </button>
+                    <button type="button" id="closeSourceModalBtn" class="nav-action-btn">
+                        Fechar ✕
+                    </button>
+                </div>
+            </div>
+            <div class="p-5 overflow-y-auto font-mono-tech text-xs leading-relaxed" style="background: var(--bg-page); color: var(--text-main);">
+                <p class="mb-3 text-xs" style="color: var(--text-secondary);">
+                    Salve este código como <strong>index.html</strong> na pasta raiz do seu projeto (no mesmo nível da pasta <code>reports/</code> onde ficam <code>reports/analise.html</code> e <code>reports/relatorio_erros.html</code>).
+                </p>
+                <pre id="htmlSourceBlock" class="whitespace-pre-wrap break-words p-4 rounded border m-0" style="background: var(--surface-card); border-color: var(--border-light); max-height: 50vh; overflow-y: auto;"></pre>
+            </div>
+        </div>
     </div>
-    <div class="footer">Desenvolvido por Mateus Lima Santos</div>
+
+    <!-- ======================================================================
+         SCRIPTS: TEMA CLARO/ESCURO & COPIAR CÓDIGO FONTE
+         ====================================================================== -->
+    <script>
+        // 1. Alternância de Tema Claro / Escuro
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeToggleLabel = document.getElementById('themeToggleLabel');
+        const iconSun = document.getElementById('iconSun');
+        const iconMoon = document.getElementById('iconMoon');
+
+        themeToggleBtn.addEventListener('click', () => {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', nextTheme);
+
+            if (nextTheme === 'dark') {
+                themeToggleLabel.textContent = 'Modo Claro';
+                iconSun.classList.remove('hidden');
+                iconMoon.classList.add('hidden');
+            } else {
+                themeToggleLabel.textContent = 'Modo Escuro';
+                iconSun.classList.add('hidden');
+                iconMoon.classList.remove('hidden');
+            }
+        });
+
+        // 2. Modal para Copiar o Código HTML Completo (index.html)
+        const sourceModal = document.getElementById('sourceModal');
+        const openSourceModalBtn = document.getElementById('openSourceModalBtn');
+        const closeSourceModalBtn = document.getElementById('closeSourceModalBtn');
+        const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+        const htmlSourceBlock = document.getElementById('htmlSourceBlock');
+
+        openSourceModalBtn.addEventListener('click', () => {
+            htmlSourceBlock.textContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            sourceModal.classList.add('open');
+        });
+
+        closeSourceModalBtn.addEventListener('click', () => {
+            sourceModal.classList.remove('open');
+        });
+
+        sourceModal.addEventListener('click', (e) => {
+            if (e.target === sourceModal) {
+                sourceModal.classList.remove('open');
+            }
+        });
+
+        copyHtmlBtn.addEventListener('click', function () {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = htmlSourceBlock.textContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const originalText = this.textContent;
+            this.textContent = '✓ Copiado!';
+            setTimeout(() => {
+                this.textContent = originalText;
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
